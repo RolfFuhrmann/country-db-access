@@ -1,0 +1,23 @@
+logging:
+  level:
+    io:
+      r2dbc:
+        mysql: DEBUG
+    org:
+      springframework:
+        data:
+          repository: DEBUG
+        r2dbc:
+          core: DeBUG
+    spring:
+      interceptor: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss}[%thread]%-5level %logger{36} - %msg%n"
+spring:
+  r2dbc:
+    password: dbadmin
+    url: r2dbc:mysql://172.17.0.2:3306/mydb?ssl=true&sslMode=require
+    username: dbadmin
+push-service:
+  url: http://172.17.0.4:8080/send/country

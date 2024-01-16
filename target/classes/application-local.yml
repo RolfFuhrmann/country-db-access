@@ -1,0 +1,17 @@
+logging:
+  level:
+    io:
+      r2dbc:
+        h2: TRACE
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss}[%thread]%-5level %logger{36} - %msg%n"
+server:
+  port: 8081
+spring:
+  r2dbc:
+    password: dbadmin
+    url: r2dbc:h2:mem:///myh2db
+    username: dbadmin
+push-service:
+  url: http://localhost:8082/send/country
