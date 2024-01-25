@@ -24,6 +24,7 @@ import rf.db.access.model.Country;
 
 @Slf4j
 @RestController
+@CrossOrigin(origins = "${cross-origin.origins}")
 @RequestMapping("/country")
 public class CountryController {
 
@@ -33,7 +34,6 @@ public class CountryController {
     @Autowired
     private PushController pushController;
 
-    @CrossOrigin(origins = "${cross-origin.origins}")
     @GetMapping(path = "/countries", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public Flux<Country> getAllCountries() {
@@ -73,7 +73,6 @@ public class CountryController {
         return countryService.deleteCountryByName(name);
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping(path = "/countries/delay", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public Flux<Country> test() {
