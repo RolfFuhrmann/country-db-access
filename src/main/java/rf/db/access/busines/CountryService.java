@@ -47,8 +47,8 @@ public class CountryService {
                 });
     }
 
-    public Mono<Void> deleteCountryByName(String name) {
-        return countryRepository.deleteByName(name);
+    public Mono<Void> deleteCountryById(Integer id) {
+        return countryRepository.deleteById(id);
     }
 
     public Mono<Void> deleteAll() {

@@ -20,5 +20,5 @@ public interface CountryRepository extends R2dbcRepository<Country, Integer> {
 
   Mono<Country> save(Country country);
 
-  Mono<Void> deleteByName(String name);
+  Mono<Void> deleteById(Integer id);
 }

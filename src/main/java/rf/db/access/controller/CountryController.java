@@ -66,11 +66,11 @@ public class CountryController {
         return countryService.update(country);
     }
 
-    @DeleteMapping("/delete/{name}")
+    @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public Mono<Void> deleteCountry(@PathVariable("name") String name) {
-        log.info("{}.deleteCountry {}", CountryController.class.getName(), name);
-        return countryService.deleteCountryByName(name);
+    public Mono<Void> deleteCountry(@PathVariable("id") Integer id) {
+        log.info("{}.deleteCountry {}", CountryController.class.getName(), id);
+        return countryService.deleteCountryById(id);
     }
 
     @GetMapping(path = "/countries/delay", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
