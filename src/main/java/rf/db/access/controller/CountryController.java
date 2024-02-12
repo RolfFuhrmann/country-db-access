@@ -56,8 +56,7 @@ public class CountryController {
     @ResponseStatus(HttpStatus.CREATED)
     public Mono<Country> createCountry(@RequestBody Country country) {
         log.info("{}.createCountry {}", CountryController.class.getName(), country.toString());
-        pushController.triggerPush(country);
-        return countryService.save(country);
+        return countryService.save(country).doOnNext(countrySaved -> pushController.triggerPush(countrySaved));
     }
 
     @PutMapping(path = "/update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_EVENT_STREAM_VALUE)
