@@ -1,28 +1,25 @@
-package rf.db.access.controller;
+package rf.db.access.busines;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import rf.db.access.model.Country;
 
-@RestController
-public class PushController {
+@Service
+public class PushService {
 
     @Value("${push-service.url}")
     private String pushServiceUrl;
 
     private final RestTemplate restTemplate;
 
-    public PushController() {
+    public PushService() {
         this.restTemplate = new RestTemplate();
     }
 
-    @PutMapping("/trigger/push")
-    public ResponseEntity<Country> triggerPush(@RequestBody Country country) {
+    public ResponseEntity<Country> triggerPush(Country country) {
         restTemplate.postForObject(pushServiceUrl, country, Country.class);
         return ResponseEntity.ok().body(country);
     }

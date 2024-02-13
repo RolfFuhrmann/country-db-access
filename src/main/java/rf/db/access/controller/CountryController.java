@@ -20,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import rf.db.access.busines.CountryService;
+import rf.db.access.busines.PushService;
 import rf.db.access.model.Country;
 
 @Slf4j
@@ -32,7 +33,7 @@ public class CountryController {
     private CountryService countryService;
 
     @Autowired
-    private PushController pushController;
+    private PushService pushController;
 
     @GetMapping(path = "/countries", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     @ResponseStatus(HttpStatus.OK)

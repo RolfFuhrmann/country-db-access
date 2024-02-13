@@ -14,4 +14,4 @@ spring:
     url: r2dbc:h2:mem:///myh2db
     username: dbadmin
 push-service:
-  url: http://localhost:8082/send/country
+  url: http://localhost:8082/country/change
