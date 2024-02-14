@@ -20,7 +20,6 @@ import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import rf.db.access.busines.CountryService;
-import rf.db.access.busines.PushService;
 import rf.db.access.model.Country;
 
 @Slf4j
@@ -31,9 +30,6 @@ public class CountryController {
 
     @Autowired
     private CountryService countryService;
-
-    @Autowired
-    private PushService pushController;
 
     @GetMapping(path = "/countries", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     @ResponseStatus(HttpStatus.OK)
@@ -47,17 +43,23 @@ public class CountryController {
         return countryService.findByNameContaining(name);
     }
 
+    @GetMapping(path = "/{id}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public Mono<Country> getCountriesById(@PathVariable("id") Integer id) {
+        return countryService.findCountryById(id);
+    }
+
     @GetMapping(path = "/continent/{continent}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public Flux<Country> getCountriesByContinent(@PathVariable("continent") String continent) {
         return countryService.findAllByContinent(continent);
     }
 
-    @PostMapping(path = "/add", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @PostMapping(path = "/add", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public Mono<Country> createCountry(@RequestBody Country country) {
         log.info("{}.createCountry {}", CountryController.class.getName(), country.toString());
-        return countryService.save(country).doOnNext(countrySaved -> pushController.triggerPush(countrySaved));
+        return countryService.save(country);
     }
 
     @PutMapping(path = "/update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_EVENT_STREAM_VALUE)
@@ -66,16 +68,16 @@ public class CountryController {
         return countryService.update(country);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping(path = "/delete", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public Mono<Void> deleteCountry(@PathVariable("id") Integer id) {
-        log.info("{}.deleteCountry {}", CountryController.class.getName(), id);
-        return countryService.deleteCountryById(id);
+    public Mono<Void> deleteCountry(@RequestBody Country country) {
+        log.info("{}.deleteCountry {}", CountryController.class.getName(), country);
+        return countryService.deleteCountryById(country);
     }
 
     @GetMapping(path = "/countries/delay", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public Flux<Country> test() {
+    public Flux<Country> findAllDelay() {
         return countryService.findAll()
                 .delayElements(Duration.ofSeconds(1))
                 .doOnNext(Flux::just);

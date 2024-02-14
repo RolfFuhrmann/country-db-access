@@ -1,5 +1,7 @@
 package rf.db.access.busines;
 
+import java.util.Objects;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,7 @@ public class PushService {
     }
 
     public ResponseEntity<Country> triggerPush(Country country) {
+        Objects.requireNonNull(pushServiceUrl);
         restTemplate.postForObject(pushServiceUrl, country, Country.class);
         return ResponseEntity.ok().body(country);
     }

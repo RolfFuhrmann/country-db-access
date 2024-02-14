@@ -12,13 +12,7 @@ import rf.db.access.model.Country;
 @Repository
 public interface CountryRepository extends R2dbcRepository<Country, Integer> {
 
-  Flux<Country> findAll();
-
   Mono<Country> findByNameContaining(String name);
 
   Flux<Country> findDistinctByContinentIn(List<String> continents);
-
-  Mono<Country> save(Country country);
-
-  Mono<Void> deleteById(Integer id);
 }
